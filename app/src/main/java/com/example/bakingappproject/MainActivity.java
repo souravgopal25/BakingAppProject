@@ -8,6 +8,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +18,7 @@ import com.example.bakingappproject.constant.Constant;
 import com.example.bakingappproject.model.Recipe;
 import com.example.bakingappproject.networking.ApiInterface;
 import com.example.bakingappproject.networking.RetrofitRequest;
+import com.example.bakingappproject.testing.SimpleIdlingResource;
 import com.example.bakingappproject.utils.NetworkCheck;
 
 
@@ -43,6 +45,9 @@ public class MainActivity extends AppCompatActivity implements RecipieAdapter.Li
     private ApiInterface apiInterface;
     private String TAG=MainActivity.class.getSimpleName();
 
+    @Nullable
+    private SimpleIdlingResource mIdlingResource;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +73,13 @@ public class MainActivity extends AppCompatActivity implements RecipieAdapter.Li
                     Log.e(TAG,"RESPONSE.body is of class "+response.body().getClass());
                     Log.e(TAG,"1 ST :"+listofRecipe.get(0).getName());
                     recipieAdapter.setRecipie(response.body());
+                    IdlingRes.setIdleResourceTo(true);
                 }
 
                 @Override
                 public void onFailure(Call<List<Recipe>> call, Throwable t) {
                     Log.e(TAG,t.getMessage());
-
+                    IdlingRes.setIdleResourceTo(false);
                 }
             });
 

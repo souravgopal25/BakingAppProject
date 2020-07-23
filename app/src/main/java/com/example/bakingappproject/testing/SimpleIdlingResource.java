@@ -13,16 +13,17 @@ public class SimpleIdlingResource implements IdlingResource {
     private AtomicBoolean mIsIdleNow = new AtomicBoolean(true);
     @Override
     public String getName() {
-        return null;
+        return this.getClass().getName();
     }
 
     @Override
     public boolean isIdleNow() {
-        return false;
+        return mIsIdleNow.get();
     }
 
     @Override
     public void registerIdleTransitionCallback(ResourceCallback callback) {
+        mCallback=callback;
 
     }
     public void setIdleState(boolean isIdleNow) {
