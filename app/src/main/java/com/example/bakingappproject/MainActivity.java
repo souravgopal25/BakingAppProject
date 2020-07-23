@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bakingappproject.adapter.RecipieAdapter;
+import com.example.bakingappproject.constant.Constant;
 import com.example.bakingappproject.model.Recipe;
 import com.example.bakingappproject.networking.ApiInterface;
 import com.example.bakingappproject.networking.RetrofitRequest;
@@ -28,7 +29,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.bakingappproject.constant.Constant.ID;
 import static com.example.bakingappproject.constant.Constant.INGREDIENT;
+import static com.example.bakingappproject.constant.Constant.RECIPIENAME;
 import static com.example.bakingappproject.constant.Constant.STEPS;
 
 public class MainActivity extends AppCompatActivity implements RecipieAdapter.ListItemClickListener {
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements RecipieAdapter.Li
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        IdlingRes.setIdleResourceTo(false);
         initialization();
         getRecipie();
         populateRecycler();
@@ -104,6 +108,9 @@ public class MainActivity extends AppCompatActivity implements RecipieAdapter.Li
         List<Recipe.StepsBean> list2=listofRecipe.get(clickedIndex).getSteps();
         intent.putParcelableArrayListExtra(INGREDIENT, (ArrayList<? extends Parcelable>) list1);
         intent.putParcelableArrayListExtra(STEPS, (ArrayList<? extends Parcelable>) list2);
+        intent.putExtra(ID,listofRecipe.get(clickedIndex).getId());
+        intent.putExtra(RECIPIENAME,listofRecipe.get(clickedIndex).getName());
+
         startActivity(intent);
 
 

@@ -13,7 +13,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ViewRecipieStep"></activity>
+        <receiver android:name=".BakingWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/baking_widget_provider_info" />
+        </receiver>
+
+        <activity android:name=".ViewRecipieStep" />
         <activity android:name=".DetailIngredient" />
         <activity android:name=".ShowIngredient" />
         <activity android:name=".DetailActivity" />

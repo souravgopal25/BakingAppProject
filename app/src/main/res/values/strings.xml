@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">BakingAppProject</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string translatable="false" name="dummy_widget_recipe_title">RECIPE TITLE</string>
+    <string translatable="false" name="dummy_widget_ingredients">INGREDIENTS\nINGREDIENTS\nINGREDIENTS\nINGREDIENTS</string>
+    <string name="quantity">QUANTITY</string>
+    <string name="IngredientName">Ingredient Name</string>
 </resources>
