@@ -1,49 +1,92 @@
 package com.example.bakingappproject.fragment;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
+import com.example.bakingappproject.DetailActivity;
+import com.example.bakingappproject.DetailIngredient;
+import com.example.bakingappproject.MainActivity;
 import com.example.bakingappproject.R;
+
+import com.example.bakingappproject.ViewRecipieStep;
+import com.example.bakingappproject.adapter.SelectRecipeStepAdapter;
+import com.example.bakingappproject.model.Recipe;
+
+import java.util.ArrayList;
+
+import butterknife.BindView;
+
+import static com.example.bakingappproject.DetailActivity.mTwoPane;
+import static com.example.bakingappproject.constant.Constant.INGREDIENT;
+import static com.example.bakingappproject.constant.Constant.STEPS;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link SelectRecipeStep#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SelectRecipeStep extends Fragment {
+public class SelectRecipeStep extends Fragment implements SelectRecipeStepAdapter.ListItemClickListener{
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    ArrayList<Recipe.IngredientsBean> listOfIngredients;
+    ArrayList<Recipe.StepsBean> listofStep;
 
-    public SelectRecipeStep() {
-        // Required empty public constructor
+    TextView ingredient;
+
+    CardView ingredientCard;
+
+    RecyclerView recyclerView;
+    Context context;
+    OnSelectRecipie mCallback;
+
+    public ArrayList<Recipe.IngredientsBean> getListOfIngredients() {
+        return listOfIngredients;
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SelectRecipeStep.
-     */
-    // TODO: Rename and change types and number of parameters
+    public void setListOfIngredients(ArrayList<Recipe.IngredientsBean> listOfIngredients) {
+        this.listOfIngredients = listOfIngredients;
+    }
+
+    public ArrayList<Recipe.StepsBean> getListofStep() {
+        return listofStep;
+    }
+
+    public void setListofStep(ArrayList<Recipe.StepsBean> listofStep) {
+        this.listofStep = listofStep;
+        Log.e(SelectRecipeStep.class.getSimpleName(),"setListoF step :"+listofStep.size());
+    }
+
+    public SelectRecipeStep() {
+        this.listofStep=new ArrayList<>();
+        this.listOfIngredients=new ArrayList<>();
+        // Required empty public constructor
+    }
+    public interface OnSelectRecipie{
+        void onRecipieSelected(int position);
+    }
+
+
     public static SelectRecipeStep newInstance(String param1, String param2) {
         SelectRecipeStep fragment = new SelectRecipeStep();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+       /* args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);*/
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,15 +95,89 @@ public class SelectRecipeStep extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+           /* mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);*/
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_select_recipe_step, container, false);
+        View rootView=inflater.inflate(R.layout.fragment_select_recipe_step, container, false);
+        context=getContext();
+        ingredient=rootView.findViewById(R.id.ingredient);
+        ingredientCard=rootView.findViewById(R.id.ingredientCard);
+        recyclerView=rootView.findViewById(R.id.selectRecipie);
+
+        ingredient.setText("INGREDIENT");
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(context);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setHasFixedSize(true);
+        Toast.makeText(context, "NO OF OBJECT"+listofStep.size(), Toast.LENGTH_SHORT).show();
+        SelectRecipeStepAdapter selectRecipeStepAdapter=new SelectRecipeStepAdapter(context,listofStep, this::onListItemClick);
+        recyclerView.setAdapter(selectRecipeStepAdapter);
+
+
+        ingredientCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getContext(), DetailIngredient.class);
+                intent.putParcelableArrayListExtra(INGREDIENT,listOfIngredients);
+                startActivity(intent);
+            }
+        });
+
+
+
+
+        return rootView;
     }
+
+    @Override
+    public void onListItemClick(int clickedIndex) {
+        if (mTwoPane!=true) {
+            Intent intent = new Intent(getContext(), ViewRecipieStep.class);
+            intent.putExtra(STEPS, listofStep.get(clickedIndex));
+            mCallback.onRecipieSelected(clickedIndex);
+            startActivity(intent);
+        }else {
+            pass(clickedIndex);
+
+        }
+
+
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            mCallback= (OnSelectRecipie) context;
+        }catch (ClassCastException e){
+            throw new ClassCastException(context.toString()+"MUST IMPLEMENT onSelectRecipie");
+        }
+
+    }
+    public void pass(int pos) {
+        if (mTwoPane) {
+            FragmentManager fragmentManager = getFragmentManager();
+
+            Toast.makeText(getContext(), "CLCIKED" + pos, Toast.LENGTH_SHORT).show();
+            // PASS DATA
+           /* selectRecipeStep.setListOfIngredients(listOfIngredients);
+            selectRecipeStep.setListofStep(listofSteps);
+            fragmentManager.beginTransaction().add(R.id.selectRecipieDetail,selectRecipeStep).commit();*/
+
+            MediaPlayerFragment mediaPlayerFragment = new MediaPlayerFragment();
+            //PASS DATA
+            mediaPlayerFragment.setObject(listofStep.get(pos));
+            fragmentManager.beginTransaction().replace(R.id.playerFragment, mediaPlayerFragment).commit();
+            RecipeStepInstruction recipeStepInstruction = new RecipeStepInstruction();
+            // PASS DATA HERE
+            recipeStepInstruction.setObject(listofStep.get(pos));
+            fragmentManager.beginTransaction().replace(R.id.descriptionFragment, recipeStepInstruction).commit();
+
+        }
+    }
+
 }

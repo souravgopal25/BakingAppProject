@@ -7,60 +7,46 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.bakingappproject.R;
+import com.example.bakingappproject.model.Recipe;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RecipeStepInstruction#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class RecipeStepInstruction extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    Recipe.StepsBean object;
+    TextView title,description;
 
     public RecipeStepInstruction() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RecipeStepInstruction.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static RecipeStepInstruction newInstance(String param1, String param2) {
-        RecipeStepInstruction fragment = new RecipeStepInstruction();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+
+    public Recipe.StepsBean getObject() {
+        return object;
+    }
+
+    public void setObject(Recipe.StepsBean object) {
+        this.object = object;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recipe_step_instruction, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_recipe_step_instruction, container, false);
+
+        title=rootView.findViewById(R.id.shortDescription);
+        description=rootView.findViewById(R.id.longDescription);
+        title.setText(object.getShortDescription());
+        description.setText(object.getDescription());
+        return rootView;
     }
 }
