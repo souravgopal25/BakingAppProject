@@ -107,7 +107,6 @@ public class DetailActivity extends AppCompatActivity implements SelectRecipeSte
         Toast.makeText(this, "CLICKED ON POSITION "+position, Toast.LENGTH_SHORT).show();
         if (mTwoPane){
             FragmentManager fragmentManager=getSupportFragmentManager();
-            SelectRecipeStep selectRecipeStep=new SelectRecipeStep();
             Toast.makeText(this, "CLCIKED"+position, Toast.LENGTH_SHORT).show();
 
 

@@ -8,7 +8,8 @@
     android:orientation="vertical"
     tools:context=".fragment.SelectRecipeStep">
 
-    <androidx.cardview.widget.CardView
+
+        <androidx.cardview.widget.CardView
         android:id="@+id/ingredientCard"
         android:layout_margin="20dp"
         android:layout_width="match_parent"
@@ -24,7 +25,7 @@
             android:layout_height="match_parent">
             <TextView
                 android:id="@+id/ingredient"
-                android:text="NEW MOVIE"
+                android:text="@string/IngredientName"
                 android:textStyle="italic"
                 android:gravity="center"
                 android:textSize="25sp"
@@ -38,5 +39,7 @@
        android:id="@+id/selectRecipie"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"/>
-    </LinearLayout>
+</LinearLayout>
+
+
 

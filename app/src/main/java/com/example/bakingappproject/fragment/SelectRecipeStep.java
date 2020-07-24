@@ -50,10 +50,11 @@ public class SelectRecipeStep extends Fragment implements SelectRecipeStepAdapte
     TextView ingredient;
 
     CardView ingredientCard;
-
+    public static int t=0;
     RecyclerView recyclerView;
     Context context;
     OnSelectRecipie mCallback;
+    View rootView;
 
     public ArrayList<Recipe.IngredientsBean> getListOfIngredients() {
         return listOfIngredients;
@@ -98,39 +99,52 @@ public class SelectRecipeStep extends Fragment implements SelectRecipeStepAdapte
            /* mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);*/
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView=inflater.inflate(R.layout.fragment_select_recipe_step, container, false);
+        rootView=inflater.inflate(R.layout.fragment_select_recipe_step, container, false);
         context=getContext();
-        ingredient=rootView.findViewById(R.id.ingredient);
-        ingredientCard=rootView.findViewById(R.id.ingredientCard);
-        recyclerView=rootView.findViewById(R.id.selectRecipie);
-
-        ingredient.setText("INGREDIENT");
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(context);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setHasFixedSize(true);
-        Toast.makeText(context, "NO OF OBJECT"+listofStep.size(), Toast.LENGTH_SHORT).show();
-        SelectRecipeStepAdapter selectRecipeStepAdapter=new SelectRecipeStepAdapter(context,listofStep, this::onListItemClick);
-        recyclerView.setAdapter(selectRecipeStepAdapter);
 
 
-        ingredientCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(getContext(), DetailIngredient.class);
-                intent.putParcelableArrayListExtra(INGREDIENT,listOfIngredients);
-                startActivity(intent);
+            if(true){
+                initaliation();
             }
-        });
+            t+=1;
+            Log.e(SelectRecipeStep.class.getSimpleName(),"VALUE OF T is"+t);
+            LinearLayoutManager linearLayoutManager=new LinearLayoutManager(context);
+            recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.setHasFixedSize(true);
+            Toast.makeText(context, "NO OF OBJECT"+listofStep.size(), Toast.LENGTH_SHORT).show();
+            SelectRecipeStepAdapter selectRecipeStepAdapter=new SelectRecipeStepAdapter(context,listofStep, this::onListItemClick);
+            recyclerView.setAdapter(selectRecipeStepAdapter);
+
+
+            ingredientCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent=new Intent(getContext(), DetailIngredient.class);
+                    intent.putParcelableArrayListExtra(INGREDIENT,listOfIngredients);
+                    startActivity(intent);
+                }
+            });
+
 
 
 
 
         return rootView;
+    }
+    public void initaliation(){
+        ingredient=rootView.findViewById(R.id.ingredient);
+        ingredientCard=rootView.findViewById(R.id.ingredientCard);
+        recyclerView=rootView.findViewById(R.id.selectRecipie);
+
+        ingredient.setText("INGREDIENT");
+
+
     }
 
     @Override
