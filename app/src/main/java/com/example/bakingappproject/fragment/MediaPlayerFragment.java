@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bakingappproject.R;
@@ -36,6 +38,8 @@ public class MediaPlayerFragment extends Fragment {
     private long playbackPosition = 0;
     private boolean playWhenReady = true;
     String url;
+    ProgressBar progressBar;
+    TextView textView;
 
     public Recipe.StepsBean getObject() {
         return object;
@@ -105,7 +109,10 @@ public class MediaPlayerFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView=inflater.inflate(R.layout.fragment_media_player,container,false);
         playerView=rootView.findViewById(R.id.videoView);
-
+        progressBar=rootView.findViewById(R.id.progressBar);
+        textView=rootView.findViewById(R.id.noMedia);
+        progressBar.setVisibility(View.VISIBLE);
+        textView.setVisibility(View.INVISIBLE);
 
 
 
@@ -117,18 +124,37 @@ public class MediaPlayerFragment extends Fragment {
         player = new SimpleExoPlayer.Builder(getContext()).build();
         playerView.setPlayer(player);
         url=object.getVideoURL();
-        Uri uri = Uri.parse(url);
-        Toast.makeText(getContext(), "url :"+url, Toast.LENGTH_SHORT).show();
-        MediaSource mediaSource = buildMediaSource(uri);
-        player.setPlayWhenReady(playWhenReady);
-        player.seekTo(currentWindow, playbackPosition);
-        player.prepare(mediaSource, false, false);
+        if (!url.equals("")) {
+
+            Uri uri = Uri.parse(url);
+
+            Toast.makeText(getContext(), "url :" + url, Toast.LENGTH_SHORT).show();
+            MediaSource mediaSource = buildMediaSource(uri);
+
+            player.setPlayWhenReady(playWhenReady);
+
+            player.seekTo(currentWindow, playbackPosition);
+
+
+            player.prepare(mediaSource, false, false);
+        }else {
+            textView.setVisibility(View.VISIBLE);
+            playerView.setVisibility(View.INVISIBLE);
+        }
+        if (url==null){
+            Toast.makeText(getContext(), "No url Provided", Toast.LENGTH_SHORT).show();
+        }else {
+            progressBar.setVisibility(View.INVISIBLE);
+
+        }
+
+
+
     }
     private MediaSource buildMediaSource(Uri uri) {
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getContext(), "exoplayer");
 
-      /*  DashMediaSource.Factory mediaSourceFactory = new DashMediaSource.Factory(dataSourceFactory);
-        return mediaSourceFactory.createMediaSource(uri);*/
+
       return new ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
 
 

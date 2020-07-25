@@ -36,7 +36,7 @@ public class MainActivityIntenttest  {
         onView(withId(R.id.recyclerMain))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
     }
-    @After
+    @After()
     public void unregisterIdlingResource(){
         if (mIdlingResource != null) {
             IdlingRegistry.getInstance().unregister(mIdlingResource);

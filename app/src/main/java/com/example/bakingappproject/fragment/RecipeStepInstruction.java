@@ -1,7 +1,9 @@
 package com.example.bakingappproject.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -48,5 +50,10 @@ public class RecipeStepInstruction extends Fragment {
         title.setText(object.getShortDescription());
         description.setText(object.getDescription());
         return rootView;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
     }
 }
