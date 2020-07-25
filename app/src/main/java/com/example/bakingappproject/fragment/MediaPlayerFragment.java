@@ -3,6 +3,7 @@ package com.example.bakingappproject.fragment;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -40,6 +41,7 @@ public class MediaPlayerFragment extends Fragment {
     String url;
     ProgressBar progressBar;
     TextView textView;
+    String SELECTED_POSITION="selectedposition";
 
     public Recipe.StepsBean getObject() {
         return object;
@@ -100,6 +102,9 @@ public class MediaPlayerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState!=null){
+            playbackPosition=savedInstanceState.getLong(SELECTED_POSITION,0);
+        }
 
     }
 
@@ -168,5 +173,11 @@ public class MediaPlayerFragment extends Fragment {
             player = null;
         }
 
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong(SELECTED_POSITION,playbackPosition);
     }
 }
