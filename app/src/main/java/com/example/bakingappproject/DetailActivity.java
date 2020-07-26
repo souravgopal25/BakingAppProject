@@ -42,6 +42,7 @@ public class DetailActivity extends AppCompatActivity implements SelectRecipeSte
     public static boolean mTwoPane;
     private LinearLayout layoutRecipeInfo;
     String name;
+    String MTWOPANE="mTwoPane";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,5 +215,21 @@ public class DetailActivity extends AppCompatActivity implements SelectRecipeSte
             result+=str;
         }
         return result;
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(MTWOPANE,mTwoPane);
+        outState.putParcelableArrayList(STEPS,listofSteps);
+        outState.putParcelableArrayList(INGREDIENT,listOfIngredients);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        listofSteps=savedInstanceState.getParcelableArrayList(STEPS);
+        listOfIngredients=savedInstanceState.getParcelableArrayList(INGREDIENT);
+        mTwoPane=savedInstanceState.getBoolean(MTWOPANE);
     }
 }

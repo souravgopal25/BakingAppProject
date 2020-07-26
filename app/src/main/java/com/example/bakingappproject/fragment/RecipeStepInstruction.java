@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ public class RecipeStepInstruction extends Fragment {
 
     Recipe.StepsBean object;
     TextView title,description;
+    String OBJECT="object";
 
     public RecipeStepInstruction() {
         // Required empty public constructor
@@ -36,6 +38,9 @@ public class RecipeStepInstruction extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState!=null){
+            object=savedInstanceState.getParcelable(OBJECT);
+        }
 
     }
 
@@ -47,8 +52,8 @@ public class RecipeStepInstruction extends Fragment {
 
         title=rootView.findViewById(R.id.shortDescription);
         description=rootView.findViewById(R.id.longDescription);
-        title.setText(object.getShortDescription());
-        description.setText(object.getDescription());
+        /*title.setText(object.getShortDescription());
+        description.setText(object.getDescription());*/
         return rootView;
     }
 
@@ -56,4 +61,12 @@ public class RecipeStepInstruction extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
     }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(OBJECT,object);
+    }
+
+
 }

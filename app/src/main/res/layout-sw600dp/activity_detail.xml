@@ -7,7 +7,7 @@
     android:id="@+id/layout_recipie_info"
     android:baselineAligned="false"
     >
-    <fragment
+    <FrameLayout
         android:id="@+id/selectRecipieDetail"
         android:layout_width="400dp"
         android:layout_gravity="start"

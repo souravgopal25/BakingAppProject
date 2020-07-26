@@ -42,6 +42,7 @@ public class MediaPlayerFragment extends Fragment {
     ProgressBar progressBar;
     TextView textView;
     String SELECTED_POSITION="selectedposition";
+    String OBJECT="object";
 
     public Recipe.StepsBean getObject() {
         return object;
@@ -104,6 +105,7 @@ public class MediaPlayerFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (savedInstanceState!=null){
             playbackPosition=savedInstanceState.getLong(SELECTED_POSITION,0);
+            object=savedInstanceState.getParcelable(OBJECT);
         }
 
     }
@@ -179,5 +181,6 @@ public class MediaPlayerFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putLong(SELECTED_POSITION,playbackPosition);
+        outState.putParcelable(OBJECT,object);
     }
 }

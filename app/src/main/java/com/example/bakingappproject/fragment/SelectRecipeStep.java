@@ -55,6 +55,8 @@ public class SelectRecipeStep extends Fragment implements SelectRecipeStepAdapte
     Context context;
     OnSelectRecipie mCallback;
     View rootView;
+    String LISTOFINGREDIENT="listofingredient";
+    String LISTOFSTEP="listofstep";
 
     public ArrayList<Recipe.IngredientsBean> getListOfIngredients() {
         return listOfIngredients;
@@ -95,9 +97,9 @@ public class SelectRecipeStep extends Fragment implements SelectRecipeStepAdapte
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-           /* mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);*/
+        if (savedInstanceState!=null){
+            listOfIngredients=savedInstanceState.getParcelableArrayList(LISTOFINGREDIENT);
+            listofStep=savedInstanceState.getParcelableArrayList(LISTOFSTEP);
         }
 
     }
@@ -194,4 +196,10 @@ public class SelectRecipeStep extends Fragment implements SelectRecipeStepAdapte
         }
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(LISTOFINGREDIENT,listOfIngredients);
+        outState.putParcelableArrayList(LISTOFSTEP,listofStep);
+    }
 }
